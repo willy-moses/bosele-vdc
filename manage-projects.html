@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Projects — Bosele Village Development Committee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-deep: #12324A;
+    --blue-mid: #2E7099;
+    --sand: #C98A3E;
+    --sand-light: #E7B872;
+    --bone: #F7F4EC;
+    --ink: #17201F;
+    --line: rgba(23,32,31,0.12);
+    --line-light: rgba(247,244,236,0.18);
+    --radius: 3px;
+    --maxw: 1160px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bone); color:var(--ink);
+    font-family:'Work Sans', sans-serif; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sand);
+  }
+  :focus-visible{outline:2px solid var(--sand); outline-offset:3px;}
+  code{font-family:'IBM Plex Mono', monospace; background:rgba(23,32,31,0.08); padding:2px 5px; border-radius:3px; font-size:0.85em;}
+
+  /* ---------- TOP BAR ---------- */
+  header.site{
+    background:var(--blue-deep); color:var(--bone);
+    border-bottom:1px solid var(--line-light);
+  }
+  .navbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px; max-width:var(--maxw); margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces', serif; font-weight:600; font-size:1rem; text-decoration:none; color:var(--bone);}
+  .brand-mark{width:28px; height:28px; flex:none;}
+  .back-link{font-size:0.84rem; text-decoration:none; color:rgba(247,244,236,0.7); display:flex; align-items:center; gap:6px;}
+  .back-link:hover{color:var(--sand-light);}
+
+  .page-head{padding:44px 0 8px;}
+  .page-head h1{font-size:clamp(1.9rem,3.5vw,2.5rem);}
+  .page-head p{margin-top:12px; max-width:64ch; color:rgba(23,32,31,0.68); font-size:1rem;}
+
+  .steps-note{
+    margin:24px 0 8px; display:flex; gap:12px; align-items:flex-start;
+    background:#fff; border:1px solid var(--line); border-radius:8px; padding:18px 22px;
+    font-size:0.88rem; color:rgba(23,32,31,0.7);
+  }
+  .steps-note .icon{width:20px; height:20px; flex:none; color:var(--sand); margin-top:1px;}
+
+  /* ---------- LAYOUT ---------- */
+  main{padding:32px 0 88px;}
+  .layout{display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;}
+  @media (max-width:960px){.layout{grid-template-columns:1fr;}}
+
+  /* ---------- FORM CARD ---------- */
+  .form-card{background:#fff; border:1px solid var(--line); border-radius:8px; padding:30px 28px;}
+  .form-card h2{font-size:1.1rem; margin-bottom:20px;}
+
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block; font-family:'IBM Plex Mono', monospace; font-size:0.7rem;
+    letter-spacing:0.05em; text-transform:uppercase; color:rgba(23,32,31,0.55); margin-bottom:8px;
+  }
+  .field input[type=text], .field textarea, .field select{
+    width:100%; border:1px solid var(--line); border-radius:var(--radius);
+    padding:12px 13px; font-family:'Work Sans', sans-serif; font-size:0.94rem;
+    background:var(--bone); color:var(--ink);
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--sand);}
+  .field textarea{resize:vertical; min-height:80px;}
+  .field-hint{font-size:0.78rem; color:rgba(23,32,31,0.5); margin-top:6px;}
+
+  .progress-row{display:flex; align-items:center; gap:14px;}
+  .progress-row input[type=range]{flex:1; accent-color:var(--sand);}
+  .progress-row .progress-val{
+    font-family:'IBM Plex Mono', monospace; font-size:0.85rem; width:44px; text-align:right;
+  }
+
+  /* video dropzone */
+  .dropzone{
+    border:1.5px dashed var(--line); border-radius:8px;
+    padding:26px 20px; text-align:center; cursor:pointer;
+    background:var(--bone); transition:border-color .15s, background .15s;
+  }
+  .dropzone.dragover{border-color:var(--sand); background:rgba(201,138,62,0.06);}
+  .dropzone .icon{width:30px; height:30px; color:var(--sand); margin:0 auto 10px;}
+  .dropzone .dz-title{font-size:0.92rem; font-weight:600;}
+  .dropzone .dz-sub{font-size:0.8rem; color:rgba(23,32,31,0.55); margin-top:4px;}
+  .dropzone input{display:none;}
+  .dz-filename{
+    margin-top:12px; font-size:0.84rem; color:var(--blue-deep);
+    background:rgba(46,112,153,0.08); border-radius:6px; padding:8px 12px;
+    display:none; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .dz-filename button{
+    background:none; border:none; color:rgba(23,32,31,0.5); cursor:pointer; font-size:0.9rem;
+  }
+  video.dz-preview{width:100%; border-radius:6px; margin-top:12px; display:none; background:#000;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 24px; border-radius:var(--radius); font-size:0.92rem; font-weight:600;
+    border:1px solid transparent; cursor:pointer; transition:transform .12s ease, background .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--sand); color:var(--blue-deep); width:100%; justify-content:center; margin-top:6px;}
+  .btn-primary:hover{background:var(--sand-light);}
+  .btn-primary:disabled{opacity:0.5; cursor:not-allowed; transform:none;}
+
+  /* ---------- PREVIEW / LIST ---------- */
+  .preview-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+  .preview-head h2{font-size:1.1rem;}
+  .count-pill{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    background:var(--blue-deep); color:var(--sand-light); padding:4px 10px; border-radius:100px;
+  }
+
+  .card-list{display:flex; flex-direction:column; gap:16px;}
+  .empty-state{
+    background:#fff; border:1px dashed var(--line); border-radius:8px;
+    padding:40px 24px; text-align:center; color:rgba(23,32,31,0.5); font-size:0.9rem;
+  }
+
+  .pcard{background:#fff; border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .pcard-art{height:100px; background:linear-gradient(135deg,var(--blue-mid),var(--blue-deep)); position:relative;}
+  .pcard-body{padding:18px 20px;}
+  .pcard-body .eyebrow{margin-bottom:6px;}
+  .pcard-body h3{font-size:1.02rem; margin-bottom:6px;}
+  .pcard-body p{font-size:0.86rem; color:rgba(23,32,31,0.65);}
+  .pcard .progress{height:5px; background:var(--line); border-radius:100px; margin-top:14px; overflow:hidden;}
+  .pcard .progress span{display:block; height:100%; background:var(--sand);}
+  .pcard-video-tag{
+    margin-top:12px; display:flex; align-items:center; gap:8px;
+    font-size:0.78rem; color:var(--blue-deep); background:rgba(46,112,153,0.08);
+    border-radius:6px; padding:8px 10px;
+  }
+  .pcard-video-tag svg{width:14px; height:14px; flex:none; color:var(--blue-mid);}
+  .pcard-actions{
+    display:flex; gap:10px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line);
+  }
+  .pcard-actions button{
+    flex:1; font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.04em; text-transform:uppercase;
+    padding:9px 0; border-radius:100px; border:1px solid var(--line); background:var(--bone); cursor:pointer;
+    color:rgba(23,32,31,0.65); transition:all .15s;
+  }
+  .pcard-actions button:hover{border-color:var(--sand); color:var(--ink);}
+  .pcard-actions button.danger:hover{border-color:#b0453c; color:#b0453c;}
+
+  /* ---------- CODE PANEL ---------- */
+  .code-panel{
+    margin-top:28px; background:var(--ink); border-radius:8px; padding:24px 24px 22px;
+  }
+  .code-panel h3{color:var(--bone); font-size:0.95rem; margin-bottom:6px;}
+  .code-panel p{color:rgba(247,244,236,0.6); font-size:0.82rem; margin-bottom:14px;}
+  .code-box{
+    background:rgba(0,0,0,0.35); border:1px solid rgba(247,244,236,0.12); border-radius:6px;
+    padding:16px; max-height:220px; overflow:auto;
+  }
+  .code-box pre{
+    font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:#cfe7d8; white-space:pre-wrap; word-break:break-word;
+  }
+  .code-actions{display:flex; gap:10px; margin-top:14px;}
+  .code-actions button{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.04em; text-transform:uppercase;
+    padding:10px 16px; border-radius:100px; border:1px solid rgba(247,244,236,0.25);
+    background:transparent; color:var(--bone); cursor:pointer;
+  }
+  .code-actions button:hover{background:rgba(247,244,236,0.08);}
+  .copy-status{font-size:0.78rem; color:var(--sand-light); margin-left:4px; display:none;}
+
+  footer.mini{
+    text-align:center; padding:24px 20px; font-size:0.78rem; color:rgba(23,32,31,0.45);
+    border-top:1px solid var(--line); margin-top:20px;
+  }
+  footer.mini a{color:rgba(23,32,31,0.6); text-decoration:none;}
+  footer.mini a:hover{color:var(--sand);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="navbar">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="19" stroke="#C98A3E" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="12" stroke="#C98A3E" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="4.5" fill="#C98A3E"/>
+      </svg>
+      Bosele VDC
+    </a>
+    <a href="staff-portal.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Staff Portal
+    </a>
+  </div>
+</header>
+
+<div class="wrap page-head">
+  <p class="eyebrow">Staff tool &middot; no coding needed</p>
+  <h1>Manage Projects</h1>
+  <p>Add a new development project card — with a photo of the chairperson talking about it, if you like — using the form below. No code required, just fill in the details and pick a video.</p>
+</div>
+
+<div class="wrap">
+  <div class="steps-note">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span>
+      <strong>How this works:</strong> no database, just files — good for keeping big video files off a database and cheap to host on Vercel.
+      1) fill the form and click <strong>Add project card</strong>,
+      2) once you've added all your projects, click <strong>Download projects.json</strong> below,
+      3) put that file plus your videos into the website's folder before deploying — <code>projects.json</code> at the top level and each video inside <code>videos/</code>, named exactly as shown on each card.
+      Cards you add here are saved in this browser too, so you won't lose your work if you close the tab.
+    </span>
+  </div>
+</div>
+
+<main>
+  <div class="wrap layout">
+
+    <div class="form-card">
+      <h2>New project details</h2>
+      <form id="projectForm">
+        <div class="field">
+          <label for="pCategory">Category</label>
+          <select id="pCategory">
+            <option>Water</option>
+            <option>Education</option>
+            <option>Infrastructure</option>
+            <option>Health</option>
+            <option>Youth</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pTitle">Project title</label>
+          <input type="text" id="pTitle" placeholder="e.g. New standpipe installation" required>
+        </div>
+        <div class="field">
+          <label for="pDesc">Short description</label>
+          <textarea id="pDesc" placeholder="A sentence or two about what this project is and who it helps."></textarea>
+        </div>
+        <div class="field">
+          <label for="pProgress">Progress</label>
+          <div class="progress-row">
+            <input type="range" id="pProgress" min="0" max="100" value="25">
+            <span class="progress-val" id="pProgressVal">25%</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Chairperson's video (optional)</label>
+          <div class="dropzone" id="dropzone">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 9l5-3v12l-5-3"/></svg>
+            <div class="dz-title">Click to choose a video, or drag one here</div>
+            <div class="dz-sub">MP4 works best. This only creates a preview — see note above.</div>
+            <input type="file" id="videoInput" accept="video/*">
+          </div>
+          <div class="dz-filename" id="dzFilename">
+            <span id="dzFilenameText"></span>
+            <button type="button" id="dzRemove">Remove</button>
+          </div>
+          <video class="dz-preview" id="dzPreview" controls></video>
+          <p class="field-hint">The video previews here in your browser only. To go live, the file needs to be named as shown in the code snippet and placed in the site's <code>videos/</code> folder.</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="addBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Add project card
+        </button>
+      </form>
+    </div>
+
+    <div>
+      <div class="preview-head">
+        <h2>Your project cards</h2>
+        <span class="count-pill" id="countPill">0 added</span>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-bottom:16px;">
+        <label style="flex:1; text-align:center; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.04em; text-transform:uppercase; padding:10px 0; border-radius:100px; border:1px solid var(--line); background:#fff; cursor:pointer; color:rgba(23,32,31,0.65);">
+          Import existing projects.json
+          <input type="file" id="importInput" accept="application/json" style="display:none;">
+        </label>
+      </div>
+
+      <div class="card-list" id="cardList">
+        <div class="empty-state" id="emptyState">No project cards yet — fill in the form and click "Add project card" to create your first one.</div>
+      </div>
+
+      <div class="code-panel" id="codePanel" style="display:none;">
+        <h3>Download projects.json</h3>
+        <p>This is the whole file — put it in the same folder as <code>index.html</code> before deploying, replacing the old one. Then add each video file into <code>videos/</code>, named as shown on the card above.</p>
+        <div class="code-box"><pre id="codeOutput"></pre></div>
+        <div class="code-actions">
+          <button type="button" id="downloadBtn">Download projects.json</button>
+          <button type="button" id="copyBtn">Copy JSON</button>
+          <span class="copy-status" id="copyStatus">Copied!</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="mini">
+  &copy; 2026 Bosele Village Development Committee &middot; <a href="staff-portal.html">Staff Portal</a> &middot; <a href="index.html">Public site</a>
+</footer>
+
+<script>
+  const STORAGE_KEY = 'bosele_vdc_manual_projects';
+  const gradients = [
+    ['#2E7099','#12324A'], ['#C98A3E','#8f5c22'], ['#12324A','#1A1A1A'],
+    ['#2E7099','#C98A3E'], ['#8f5c22','#2E7099'], ['#12324A','#2E7099'],
+  ];
+
+  function loadProjects(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveProjects(list){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  let projects = loadProjects();
+  let pendingVideoName = null;
+  let pendingVideoUrl = null;
+
+  function slugify(str){
+    return str.toLowerCase().trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '') || 'project';
+  }
+
+  // ---- Progress slider ----
+  const progressInput = document.getElementById('pProgress');
+  const progressVal = document.getElementById('pProgressVal');
+  progressInput.addEventListener('input', () => {
+    progressVal.textContent = progressInput.value + '%';
+  });
+
+  // ---- Video dropzone ----
+  const dropzone = document.getElementById('dropzone');
+  const videoInput = document.getElementById('videoInput');
+  const dzFilename = document.getElementById('dzFilename');
+  const dzFilenameText = document.getElementById('dzFilenameText');
+  const dzRemove = document.getElementById('dzRemove');
+  const dzPreview = document.getElementById('dzPreview');
+
+  dropzone.addEventListener('click', () => videoInput.click());
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault(); dropzone.classList.remove('dragover');
+    if(e.dataTransfer.files[0]) handleVideoFile(e.dataTransfer.files[0]);
+  });
+  videoInput.addEventListener('change', (e) => {
+    if(e.target.files[0]) handleVideoFile(e.target.files[0]);
+  });
+  dzRemove.addEventListener('click', (e) => {
+    e.stopPropagation();
+    pendingVideoName = null; pendingVideoUrl = null;
+    videoInput.value = '';
+    dzFilename.style.display = 'none';
+    dzPreview.style.display = 'none';
+    dzPreview.src = '';
+  });
+
+  function handleVideoFile(file){
+    pendingVideoName = file.name;
+    pendingVideoUrl = URL.createObjectURL(file);
+    dzFilenameText.textContent = file.name;
+    dzFilename.style.display = 'flex';
+    dzPreview.src = pendingVideoUrl;
+    dzPreview.style.display = 'block';
+  }
+
+  // ---- Form submit ----
+  document.getElementById('projectForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('pTitle').value.trim();
+    if(!title) return;
+
+    const category = document.getElementById('pCategory').value;
+    const description = document.getElementById('pDesc').value.trim();
+    const progress = Number(progressInput.value);
+    const slug = slugify(title);
+    const video = pendingVideoName ? `videos/${slug}.mp4` : null;
+    const gradient = gradients[projects.length % gradients.length];
+
+    projects.push({
+      id: Date.now(),
+      category, title, description, progress, video, gradient,
+      videoPreviewUrl: pendingVideoUrl, // local-only, stripped before saving/exporting
+    });
+    saveProjects(stripPreview(projects));
+
+    document.getElementById('projectForm').reset();
+    progressVal.textContent = '25%';
+    pendingVideoName = null; pendingVideoUrl = null;
+    dzFilename.style.display = 'none';
+    dzPreview.style.display = 'none';
+
+    render();
+  });
+
+  function stripPreview(list){
+    return list.map(({videoPreviewUrl, ...rest}) => rest);
+  }
+
+  // ---- Render cards ----
+  function render(){
+    const list = document.getElementById('cardList');
+    const empty = document.getElementById('emptyState');
+    const countPill = document.getElementById('countPill');
+    countPill.textContent = `${projects.length} added`;
+
+    list.querySelectorAll('.pcard').forEach(el => el.remove());
+    empty.style.display = projects.length === 0 ? 'block' : 'none';
+
+    projects.forEach((p) => {
+      const g = p.gradient || gradients[0];
+      const el = document.createElement('div');
+      el.className = 'pcard';
+      el.innerHTML = `
+        <div class="pcard-art" style="background:linear-gradient(135deg,${g[0]},${g[1]});"></div>
+        <div class="pcard-body">
+          <p class="eyebrow">${escapeHtml(p.category)}</p>
+          <h3>${escapeHtml(p.title)}</h3>
+          <p>${escapeHtml(p.description || 'No description added.')}</p>
+          <div class="progress"><span style="width:${p.progress}%;"></span></div>
+          ${p.video ? `
+            <div class="pcard-video-tag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 9l5-3v12l-5-3"/></svg>
+              <span>Video: <code>${p.video}</code></span>
+            </div>` : ''}
+          <div class="pcard-actions">
+            <button type="button" class="danger" data-action="remove" data-id="${p.id}">Remove</button>
+          </div>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+
+    updateJsonPanel();
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  document.getElementById('cardList').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action="remove"]');
+    if(!btn) return;
+    const id = Number(btn.dataset.id);
+    projects = projects.filter(p => p.id !== id);
+    saveProjects(stripPreview(projects));
+    render();
+  });
+
+  // ---- projects.json build / preview / download / import ----
+  function buildJson(){
+    return JSON.stringify(stripPreview(projects), null, 2);
+  }
+
+  function updateJsonPanel(){
+    const panel = document.getElementById('codePanel');
+    if(projects.length === 0){ panel.style.display = 'none'; return; }
+    panel.style.display = 'block';
+    document.getElementById('codeOutput').textContent = buildJson();
+  }
+
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    const blob = new Blob([buildJson()], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'projects.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(buildJson()).then(() => {
+      const status = document.getElementById('copyStatus');
+      status.style.display = 'inline';
+      setTimeout(() => status.style.display = 'none', 1800);
+    });
+  });
+
+  document.getElementById('importInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try{
+        const data = JSON.parse(evt.target.result);
+        if(!Array.isArray(data)) throw new Error('Not a list of projects');
+        projects = data.map((p, i) => ({
+          id: p.id || Date.now() + i,
+          category: p.category || 'Other',
+          title: p.title || 'Untitled project',
+          description: p.description || '',
+          progress: Number(p.progress) || 0,
+          video: p.video || null,
+          gradient: p.gradient || gradients[i % gradients.length],
+        }));
+        saveProjects(projects);
+        render();
+      }catch(err){
+        alert('That file doesn\'t look like a valid projects.json — could not import it.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Committee — Bosele Village Development Committee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-deep: #12324A;
+    --blue-mid: #2E7099;
+    --sand: #C98A3E;
+    --sand-light: #E7B872;
+    --bone: #F7F4EC;
+    --ink: #17201F;
+    --line: rgba(23,32,31,0.12);
+    --line-light: rgba(247,244,236,0.18);
+    --radius: 3px;
+    --maxw: 1160px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    background:var(--bone); color:var(--ink);
+    font-family:'Work Sans', sans-serif; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--sand);
+  }
+  :focus-visible{outline:2px solid var(--sand); outline-offset:3px;}
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,50,74,0.96); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line-light);
+  }
+  .navbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:var(--maxw); margin:0 auto; color:var(--bone);
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem; text-decoration:none;}
+  .brand-mark{width:30px; height:30px; flex:none;}
+  nav.links{display:flex; align-items:center; gap:24px; font-size:0.86rem;}
+  nav.links a{text-decoration:none; color:rgba(247,244,236,0.82); transition:color .15s;}
+  nav.links a:hover{color:var(--sand-light);}
+  nav.links a.active{color:var(--sand-light);}
+  nav.links a.portal-link{
+    border:1px solid rgba(247,244,236,0.35); padding:8px 16px; border-radius:100px;
+    color:var(--sand-light); display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.links a.portal-link:hover{background:rgba(247,244,236,0.08); color:var(--bone);}
+  .nav-toggle{display:none; background:none; border:none; color:var(--bone); font-size:1.6rem; cursor:pointer;}
+  @media (max-width: 900px){
+    nav.links{position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:flex-start; background:var(--blue-deep); padding:18px 28px; gap:16px; display:none; border-bottom:1px solid var(--line-light);}
+    nav.links.open{display:flex;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- PAGE HERO ---------- */
+  .page-hero{background:var(--blue-deep); color:var(--bone); padding:64px 0 56px;}
+  .page-hero h1{font-size:clamp(2.2rem, 4vw, 3rem); margin-top:10px;}
+  .page-hero p{margin-top:16px; max-width:56ch; color:rgba(247,244,236,0.8); font-size:1.02rem;}
+
+  /* ---------- EXECUTIVE ---------- */
+  .exec-section{padding:64px 0 24px;}
+  .exec-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;}
+  @media (max-width:860px){.exec-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.exec-grid{grid-template-columns:1fr;}}
+
+  .member-card{
+    background:#fff; border:1px solid var(--line); border-radius:8px;
+    padding:26px 24px; display:flex; flex-direction:column; gap:14px;
+  }
+  .avatar{
+    width:56px; height:56px; border-radius:50%;
+    background:var(--blue-deep); color:var(--sand-light);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem;
+  }
+  .member-card.exec .avatar{background:linear-gradient(135deg,var(--blue-mid),var(--blue-deep));}
+  .member-name{font-size:1.06rem; font-weight:600;}
+  .member-role{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--sand); margin-top:-6px;
+  }
+  .member-bio{font-size:0.88rem; color:rgba(23,32,31,0.66); flex:1;}
+  .member-meta{
+    display:flex; flex-wrap:wrap; gap:8px 16px;
+    font-size:0.8rem; color:rgba(23,32,31,0.55);
+    border-top:1px solid var(--line); padding-top:12px; margin-top:2px;
+  }
+  .member-meta span{display:flex; align-items:center; gap:6px;}
+  .member-meta svg{width:14px; height:14px; color:var(--sand); flex:none;}
+
+  /* ---------- SUB-COMMITTEES ---------- */
+  .sub-section{padding:24px 0 88px;}
+  .sub-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:12px;}
+  @media (max-width:760px){.sub-grid{grid-template-columns:1fr;}}
+  .sub-card{background:var(--bone); padding:26px 26px;}
+  .sub-card h3{font-size:1.02rem; margin-bottom:8px;}
+  .sub-card p{font-size:0.88rem; color:rgba(23,32,31,0.65); margin-bottom:14px;}
+  .sub-members{list-style:none; display:flex; flex-direction:column; gap:8px;}
+  .sub-members li{
+    font-size:0.86rem; display:flex; justify-content:space-between;
+    padding:8px 0; border-top:1px solid var(--line);
+  }
+  .sub-members li:first-child{border-top:none;}
+  .sub-members .role{color:rgba(23,32,31,0.5); font-family:'IBM Plex Mono', monospace; font-size:0.72rem;}
+
+  .term-note{
+    margin-top:36px; background:var(--ink); color:rgba(247,244,236,0.82);
+    border-radius:6px; padding:22px 26px; font-size:0.88rem;
+    display:flex; gap:14px; align-items:flex-start;
+  }
+  .term-note .icon{width:18px; height:18px; flex:none; margin-top:2px; color:var(--sand-light);}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink); color:rgba(247,244,236,0.6); padding:36px 0;}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; font-size:0.82rem;}
+  footer a{text-decoration:none; color:rgba(247,244,236,0.6);}
+  footer a:hover{color:var(--sand-light);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="navbar">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="19" stroke="#C98A3E" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="12" stroke="#C98A3E" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="4.5" fill="#C98A3E"/>
+      </svg>
+      Bosele VDC
+    </a>
+    <nav class="links" id="navLinks">
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#notices">Notices</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#kgotla">Kgotla</a>
+      <a href="committee.html" class="active">Committee</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="staff-portal.html" class="portal-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Staff Portal
+      </a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Governance</p>
+    <h1>VDC Committee Members</h1>
+    <p>The people elected and appointed to lead Bosele's development priorities, chair Kgotla proceedings, and represent the village to the District Council. Sample names below — replace with the current committee once confirmed.</p>
+  </div>
+</section>
+
+<section class="exec-section">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:8px;">
+      <p class="eyebrow">Executive</p>
+      <h2 style="font-size:1.6rem; margin-top:8px;">Executive committee</h2>
+    </div>
+    <div class="exec-grid" style="margin-top:28px;">
+
+      <div class="member-card exec">
+        <div class="avatar">K</div>
+        <div>
+          <div class="member-name">Kgosi / Village Headman</div>
+          <div class="member-role">Traditional Leadership</div>
+        </div>
+        <p class="member-bio">Presides over the Kgotla and traditional dispute resolution; works alongside the VDC on matters affecting the village.</p>
+        <div class="member-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7"/></svg>To be confirmed</span>
+        </div>
+      </div>
+
+      <div class="member-card exec">
+        <div class="avatar">C</div>
+        <div>
+          <div class="member-name">VDC Chairperson</div>
+          <div class="member-role">Executive</div>
+        </div>
+        <p class="member-bio">Leads the Village Development Committee, chairs ordinary meetings, and coordinates with the District Council on projects.</p>
+        <div class="member-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7"/></svg>To be confirmed</span>
+        </div>
+      </div>
+
+      <div class="member-card exec">
+        <div class="avatar">S</div>
+        <div>
+          <div class="member-name">VDC Secretary</div>
+          <div class="member-role">Executive</div>
+        </div>
+        <p class="member-bio">Handles minutes, correspondence, notices, and formal registration documents on behalf of the committee.</p>
+        <div class="member-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>secretary@boselevdc</span>
+        </div>
+      </div>
+
+      <div class="member-card exec">
+        <div class="avatar">T</div>
+        <div>
+          <div class="member-name">VDC Treasurer</div>
+          <div class="member-role">Executive</div>
+        </div>
+        <p class="member-bio">Manages committee finances, bank reconciliation, and financial reporting for VDC-run initiatives.</p>
+        <div class="member-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7"/></svg>To be confirmed</span>
+        </div>
+      </div>
+
+      <div class="member-card exec">
+        <div class="avatar">Cn</div>
+        <div>
+          <div class="member-name">Ward Councillor</div>
+          <div class="member-role">District Council</div>
+        </div>
+        <p class="member-bio">Elected representative bridging Bosele and the District Council; attends Kgotla and VDC meetings.</p>
+        <div class="member-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7"/></svg>To be confirmed</span>
+        </div>
+      </div>
+
+      <div class="member-card exec">
+        <div class="avatar">V</div>
+        <div>
+          <div class="member-name">Vice Chairperson</div>
+          <div class="member-role">Executive</div>
+        </div>
+        <p class="member-bio">Deputises for the Chairperson and supports coordination of committee sub-groups and community projects.</p>
+        <div class="member-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7"/></svg>To be confirmed</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="sub-section">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:8px;">
+      <p class="eyebrow">Sub-committees</p>
+      <h2 style="font-size:1.6rem; margin-top:8px;">Sub-committees &amp; working groups</h2>
+      <p style="margin-top:10px;">Focused groups reporting into the main VDC, each meeting as needed to progress their area of work.</p>
+    </div>
+
+    <div class="sub-grid">
+
+      <div class="sub-card">
+        <h3>Youth &amp; Innovation</h3>
+        <p>Coordinates youth programmes and liaises with the Bosele Youth Community Innovation Hub Society.</p>
+        <ul class="sub-members">
+          <li><span>Chairperson</span><span class="role">To be confirmed</span></li>
+          <li><span>Secretary</span><span class="role">To be confirmed</span></li>
+        </ul>
+      </div>
+
+      <div class="sub-card">
+        <h3>Farmers' Committee</h3>
+        <p>Represents agricultural interests and coordinates with the district agricultural office.</p>
+        <ul class="sub-members">
+          <li><span>Chairperson</span><span class="role">To be confirmed</span></li>
+          <li><span>Secretary</span><span class="role">To be confirmed</span></li>
+        </ul>
+      </div>
+
+      <div class="sub-card">
+        <h3>Water &amp; Infrastructure</h3>
+        <p>Tracks borehole, standpipe, and road maintenance issues raised at the Kgotla.</p>
+        <ul class="sub-members">
+          <li><span>Chairperson</span><span class="role">To be confirmed</span></li>
+          <li><span>Secretary</span><span class="role">To be confirmed</span></li>
+        </ul>
+      </div>
+
+      <div class="sub-card">
+        <h3>Social Welfare</h3>
+        <p>Handles indigent registration, vulnerable household support, and referrals for national programmes.</p>
+        <ul class="sub-members">
+          <li><span>Chairperson</span><span class="role">To be confirmed</span></li>
+          <li><span>Secretary</span><span class="role">To be confirmed</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="term-note">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <span>This page uses placeholder names and roles. Replace each card with the confirmed committee member's name, contact details, and term dates once elections or appointments are finalised.</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>&copy; 2026 Bosele Village Development Committee. Sample content — replace before publishing.</span>
+    <span><a href="index.html#about">About</a> &middot; <a href="committee.html">Committee</a> &middot; <a href="calendar.html">Calendar</a> &middot; <a href="gallery.html">Gallery</a> &middot; <a href="index.html#contact">Contact</a> &middot; <a href="staff-portal.html">Staff Portal</a></span>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+</body>
+</html>
