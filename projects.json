@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1784259224899,
+    "category": "Water",
+    "title": "New Stand pipe",
+    "desc": "Test",
+    "progress": "25",
+    "videoFilename": "videos/new-stand-pipe.mp4",
+    "hasVideoPreview": true
+  },
+  {
+    "id": 1784273128891,
+    "category": "Water",
+    "title": "New Stand pipe",
+    "description": "Test Case",
+    "progress": 25,
+    "video": "videos/new-stand-pipe.mp4",
+    "gradient": [
+      "#C98A3E",
+      "#8f5c22"
+    ]
+  },
+  {
+    "id": 1784273371597,
+    "category": "Infrastructure",
+    "title": "Test case",
+    "description": "Test Case",
+    "progress": 25,
+    "video": "videos/test-case.mp4",
+    "gradient": [
+      "#12324A",
+      "#1A1A1A"
+    ]
+  },
+  {
+    "id": 1784276781612,
+    "category": "Water",
+    "title": "Test case",
+    "description": "Test Case",
+    "progress": 25,
+    "video": "videos/test-case.mp4",
+    "gradient": [
+      "#2E7099",
+      "#C98A3E"
+    ]
+  }
+]

@@ -224,10 +224,10 @@
     <h1>Staff Portal</h1>
     <p class="subtitle">Sign in to manage notices, projects, and Kgotla records for Bosele VDC.</p>
 
-    <form id="loginForm" onsubmit="event.preventDefault(); document.getElementById('statusMsg').style.display='block';">
+    <form id="loginForm">
       <div class="field">
-        <label for="username">Username or email</label>
-        <input type="text" id="username" placeholder="e.g. secretary@boselevdc" autocomplete="username" required>
+        <label for="username">Email</label>
+        <input type="email" id="username" placeholder="e.g. secretary@boselevdc.org" autocomplete="username" required>
       </div>
       <div class="field">
         <label for="password">Password</label>
@@ -235,13 +235,13 @@
       </div>
       <div class="field-row">
         <label class="remember">
-          <input type="checkbox" id="remember">
+          <input type="checkbox" id="remember" checked>
           Keep me signed in
         </label>
-        <a href="#" class="forgot" onclick="event.preventDefault(); alert('Password reset is not yet connected. This is a template page.');">Forgot password?</a>
+        <a href="#" class="forgot" onclick="event.preventDefault(); alert('Ask whoever manages the Supabase project to reset your password from the Authentication tab.');">Forgot password?</a>
       </div>
-      <button type="submit" class="btn-login">Sign in</button>
-      <p class="status-msg" id="statusMsg">This is a template login form — no account has been created yet. Connect this page to your authentication backend to enable real sign-in.</p>
+      <button type="submit" class="btn-login" id="loginBtn">Sign in</button>
+      <p class="status-msg" id="statusMsg"></p>
     </form>
 
     <div class="divider">Portal roles</div>
@@ -263,7 +263,7 @@
 
     <div class="template-note">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      <span>This portal is a front-end template only. To make it a real staff login, connect the form to an authentication service such as Supabase Auth, add role-based access, and gate the pages staff will manage.</span>
+      <span>This login is connected to Supabase Auth. Only accounts created in the Supabase dashboard (Authentication → Users) can sign in — there's no public sign-up on this page.</span>
     </div>
   </div>
 </main>
@@ -271,6 +271,52 @@
 <footer class="mini">
   &copy; 2026 Bosele Village Development Committee &middot; <a href="index.html">Return to public site</a>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  const SUPABASE_URL = 'https://omyqyeyvvpsohqmluskr.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9teXF5ZXl2dnBzb2hxbWx1c2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwMDI2MTgsImV4cCI6MjA4MzU3ODYxOH0.f_UwrGmWwhmi1-lY0TtyX0-DscxW_yaN69hXK-6nDOs';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const form = document.getElementById('loginForm');
+  const statusMsg = document.getElementById('statusMsg');
+  const loginBtn = document.getElementById('loginBtn');
+
+  function showStatus(text, isError){
+    statusMsg.textContent = text;
+    statusMsg.style.display = 'block';
+    statusMsg.style.color = isError ? '#e39a8f' : '';
+  }
+
+  // If already logged in, skip straight to Manage Projects
+  supabase.auth.getSession().then(({ data }) => {
+    if(data.session){
+      window.location.href = 'manage-projects.html';
+    }
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Signing in…';
+    showStatus('', false);
+    statusMsg.style.display = 'none';
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if(error){
+      showStatus('Sign-in failed: ' + error.message, true);
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Sign in';
+      return;
+    }
+
+    window.location.href = 'manage-projects.html';
+  });
+</script>
 
 </body>
 </html>
